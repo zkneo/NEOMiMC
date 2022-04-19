@@ -23,15 +23,33 @@ namespace NEOMiMC
             BigInteger y;
             public Pair(BigInteger i, BigInteger j) {x=i;y=j;}
         }
-
-        public static BigInteger mulmod(BigInteger x, BigInteger y, BigInteger m) {
-            return (x * y) % m;
+        public static void Update(ByteString nefFile, string manifest)
+        {
+            ContractManagement.Update(nefFile, manifest, null);
+        }
+        public static BigInteger mulmod(BigInteger a, BigInteger b, BigInteger mod)
+        {
+            BigInteger res = 0;
+            a = a % mod;
+            while (b > 0)
+            {
+                if (b % 2 == 1)
+                {
+                    res = (res + a) % mod;
+                }
+                a = (a * 2) % mod;
+                b /= 2;
+            }
+            return res % mod;
         }
         public static BigInteger addmod(BigInteger x, BigInteger y, BigInteger m) {
             return (x + y) % m;
         }
 
         public static Pair MiMCSponge(BigInteger xL, BigInteger xR) {
+            xL =  xL % FIELD_SIZE;
+            xR = xR % FIELD_SIZE;
+
             BigInteger exp;
             BigInteger t;
             BigInteger xR_tmp;
